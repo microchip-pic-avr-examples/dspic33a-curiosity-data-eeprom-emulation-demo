@@ -52,6 +52,9 @@ pipeline {
             Project Build Stage Information
         */
         MPLABX_PROJECT_SOURCE = "../"
+		
+		/* Hex file commit */
+		HEX_FILE_COMMIT = 'true'
     }
 	
 	triggers { 
@@ -146,6 +149,23 @@ pipeline {
                     script {                    
                         doxygen()
                     }
+                }
+            }
+        }
+		
+		// Committing hex files
+		stage('Commit Hex File'){
+            when {
+                anyOf{
+                    allOf {
+                        changeRequest()
+                        expression { return env.HEX_FILE_COMMIT == 'true' &&  env.CHANGE_TARGET == 'develop' }
+                    }
+                }
+            }
+            steps {
+               script {
+                    commitHexFile()
                 }
             }
         }
