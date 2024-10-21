@@ -369,7 +369,7 @@ DEE_RETURN_STATUS DEE_Write(uint16_t addr, uint32_t data)
     }
 
     //Pack if page is full
-    if ((nextLoc + ADDRESS_INC_FACTOR) == ((NUMBER_OF_INSTRUCTIONS_IN_PAGE * WORD_WRITE_SIZE)))
+    if ((nextLoc + ADDRESS_INC_FACTOR) >= ((NUMBER_OF_INSTRUCTIONS_IN_PAGE * WORD_WRITE_SIZE)))
     {
         status = DEE_Pack(bank);
     }

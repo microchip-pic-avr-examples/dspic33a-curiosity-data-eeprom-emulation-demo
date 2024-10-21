@@ -39,7 +39,7 @@
                    displayName="Important Files"
                    projectFiles="true">
       <itemPath>Makefile</itemPath>
-      <itemPath>dspic33ak-curiosity-dee-demo.mc3</itemPath>
+      <itemPath>dspic33a-curiosity-dee-demo.mc3</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -338,6 +338,8 @@
                   value="${memories.instruction.ram.ranges}"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="800000-81ffff"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/PROJECTS/MCU16CE/dspic33a-data-eeprom-emulation-demo/dspic33a-curiosity-dee-demo/dspic33a-curiosity-dee-demo.X/debug/default/dspic33a-curiosity-dee-demo_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.pgmentry.voltage" value="low"/>
@@ -441,7 +443,7 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="800000-81ffff"/>
         <property key="programmerToGoFilePath"
-                  value="C:/PROJECTS/MCU16CE/dspic33ak-data-eeprom-emulation-demo/dspic33ak-curiosity-dee-demo/dspic33ak-curiosity-dee-demo.X/debug/default/dspic33ak-curiosity-dee-demo_ptg"/>
+                  value="C:/PROJECTS/MCU16CE/dspic33a-data-eeprom-emulation-demo/dspic33a-curiosity-dee-demo/dspic33a-curiosity-dee-demo.X/debug/default/dspic33a-curiosity-dee-demo_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.pgmentry.voltage" value="low"/>
