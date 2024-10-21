@@ -158,7 +158,7 @@ pipeline {
             when {
                 anyOf{
                     allOf {
-                        changeRequest()
+                        not { changeRequest() }
                         expression { return env.HEX_FILE_COMMIT == 'true' &&  env.CHANGE_TARGET == 'develop' }
                     }
                 }
