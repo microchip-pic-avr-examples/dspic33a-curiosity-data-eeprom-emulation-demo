@@ -38,11 +38,25 @@ This code example demonstrates the usage of Data EEPROM Emulation Library.
 
 **Note:** The word panel and partition means the same thing and used interchangeably in this document.
 
-## Operation
-This demo runs the Data EEPROM Emulation , if emulation is successful then prints a message to the serial terminal saying "Data EEPROM Emulation successful. Value at address 0 is 1024 and address1 is 1025"
-If emulation fails it prints a message to the serial terminal saying "Data EEPROM Emulation failed".
+### Terminal Setup (Tera Term)
+1. Launch Tera Term
+2. Go to File -> New Connection.
+3. Select the "Serial" option and select the correct COM Port from the dropdown menu.
 
-![image](images/partition1.jpg)
+    ![COM port selection](images/tera_term_COM_port_selection.jpg)
+
+4. Go to Setup -> Serial port and ensure that the settings match the following:
+
+    ![Tera Term Serial Port Settings](images/tera_term_serial_port_menu.jpg)
+
+## Operation
+This demo runs the Data EEPROM Emulation , if emulation is successful then prints the message as shown below
+
+![image](images/success.jpg)
+
+If emulation fails then prints the message as shown below.
+
+![image](images/failure.jpg)
 
 
 ## Accessing Data EEPROM Emulation Library

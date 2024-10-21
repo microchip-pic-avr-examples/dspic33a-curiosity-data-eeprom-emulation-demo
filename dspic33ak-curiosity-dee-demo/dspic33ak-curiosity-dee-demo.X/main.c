@@ -27,28 +27,35 @@
     Main application
  */
 
+#define LOOPCOUNT 1024
+
 int main(void) {
-    int addr0 = 0, addr1 = 1, i;
+    int addr0 = 0, addr1 = 1, addr2 = 2, i;
     uint32_t valueAtAddr0 = 0;
     uint32_t valueAtAddr1 = 0;
-    uint32_t expectedValueAtAddr0 = 1024;
-    uint32_t expectedValueAtAddr1 = 1025;
+    uint32_t valueAtAddr2 = 0;
+    uint32_t expectedValueAtAddr0 = LOOPCOUNT;
+    uint32_t expectedValueAtAddr1 = LOOPCOUNT+1;
+    uint32_t expectedValueAtAddr2 = LOOPCOUNT+5;
 
     SYSTEM_Initialize();
+    printf("Data EEPROM Emulation is in progress...\r\n");
     DEE_Init();
 
-    for (i = 0; i < 1024; i++) {
+    for (i = 0; i < LOOPCOUNT; i++) {
         DEE_Write(addr0, i + 1);
         DEE_Write(addr1, i + 2);
+        DEE_Write(addr2, i + 3);
     }
 
     DEE_Read(addr0, &valueAtAddr0);
     DEE_Read(addr1, &valueAtAddr1);
+    DEE_Read(addr2, &valueAtAddr2);
 
-    if (valueAtAddr0 == expectedValueAtAddr0 && valueAtAddr1 == expectedValueAtAddr1) {
-        printf("Data EEPROM Emulation successful. Value at address 0 is %ld and address 1 is %ld \r\n", valueAtAddr0, valueAtAddr1);
+    if (valueAtAddr0 == expectedValueAtAddr0 && valueAtAddr1 == expectedValueAtAddr1 && valueAtAddr2 == expectedValueAtAddr2) {
+        printf("Data EEPROM Emulation successful.\r\n Value at address 0 is %ld\r\n Value at address 1 is %ld \r\n Value at address 2 is %ld \r\n", valueAtAddr0, valueAtAddr1, valueAtAddr2);
     } else {
-        printf("Data EEPROM Emulation failed. Value at address 0 is %ld and address 1 is %ld \r\n", valueAtAddr0, valueAtAddr1);
+        printf("Data EEPROM Emulation failed.\r\n Value at address 0 is %ld\r\n Value at address 1 is %ld \r\n Value at address 2 is %ld \r\n", valueAtAddr0, valueAtAddr1, valueAtAddr2);
     }
     while(1);
     return 0;

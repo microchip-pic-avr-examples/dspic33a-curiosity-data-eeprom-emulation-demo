@@ -63,7 +63,7 @@ void PINS_Initialize(void)
     LATA = 0x0000UL;
     LATB = 0x0000UL;
     LATC = 0x0000UL;
-    LATD = 0x0002UL;
+    LATD = 0x0200UL;
 
     /****************************************************************************
      * Setting the GPIO Direction SFR(s)
@@ -71,7 +71,7 @@ void PINS_Initialize(void)
     TRISA = 0x0FFFUL;
     TRISB = 0x0FFFUL;
     TRISC = 0x0FFFUL;
-    TRISD = 0x1FFDUL;
+    TRISD = 0x1DFFUL;
 
 
     /****************************************************************************
@@ -107,8 +107,8 @@ void PINS_Initialize(void)
      ***************************************************************************/
       PINS_PPSUnlock(); // unlock PPS
 
-        RPINR9bits.U1RXR = 0x0034UL; //RD3->UART1:U1RX;
-        RPOR12bits.RP50R = 0x0009UL;  //RD1->UART1:U1TX;
+        RPINR9bits.U1RXR = 0x003BUL; //RD10->UART1:U1RX;
+        RPOR14bits.RP58R = 0x0009UL;  //RD9->UART1:U1TX;
 
       PINS_PPSLock(); // lock PPS
 
