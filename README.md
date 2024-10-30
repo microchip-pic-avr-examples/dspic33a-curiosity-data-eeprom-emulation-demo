@@ -28,15 +28,14 @@ This code example demonstrates the usage of Data EEPROM Emulation Library.
 - MPLAB® X IDE v6.20 or newer (https://www.microchip.com/mplabx)
 - MPLAB® XC16 v3.10 or newer (https://www.microchip.com/xc)
 - Any of the serial terminal application. Example: Tera Term (https://ttssh2.osdn.jp/index.html.en)
-- Data EEPROM Emulation Library (DEE) for dsPIC33 DSCs (https://www.microchip.com/en-us/software-library/16-bit_data_eeprom_emulation)
 
 
 ## Hardware Used
 
 - dsPIC33AK Curiosity Development Board (https://www.microchip.com/EV74H48A)
-- Micro USB Cable
+- dsPIC33AK128MC106 GP DIM (https://www.microchip.com/ev02g02a)
+- USB Type-c Cable
 
-**Note:** The word panel and partition means the same thing and used interchangeably in this document.
 
 ### Terminal Setup (Tera Term)
 1. Launch Tera Term
@@ -66,6 +65,5 @@ If emulation fails then prints the message as shown below.
 | Device Family         | Procedure                  |
 | -----------           | -----------                |
 | Devices supported on Melody| 1. Create project <br> 2. Launch MCC <br> 3. "Data EEPROM Emulation Library "will be available under "Libraries", if not available use content manager to download it. <br>  <img src="images/DEEMelody.jpg" width="600">       |
-|   Devices not supported on Melody                   | 1. Make sure https://ww1.microchip.com/downloads/en/DeviceDoc/script-1.29.3.mc3lib is installed <br> 2. Create project <br> 3. Launch MCC <br> 4. Select "Classic MCC"  <br>  <img src="images/classicSelection.jpg" width="600"><br> 5. Switch core version to "5.2.1"     <br>  <img src="images/coreSwitch.jpg" width="600">  <br> 6. "16-Bit Data EEPROM Emulation Library" will be available under "Libraries" <br>   <img src="images/DEEClassic.jpg" width="600">         |
 
 For more information refer: https://www.microchip.com/en-us/software-library/dspic33-pic24-data-eeprom-emulation
