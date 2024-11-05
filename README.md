@@ -60,8 +60,6 @@ If emulation fails then prints the message as shown below.
 
 ## Accessing Data EEPROM Emulation Library
 
-*Note:* More MCC Melody devices support will be added in future releases.
-
 | Device Family         | Procedure                  |
 | -----------           | -----------                |
 | Devices supported on Melody| 1. Create project <br> 2. Launch MCC <br> 3. "Data EEPROM Emulation Library "will be available under "Libraries", if not available use content manager to download it. <br>  <img src="images/DEEMelody.jpg" width="600">       |
