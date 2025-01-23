@@ -20,7 +20,7 @@ This code example demonstrates the usage of Data EEPROM Emulation Library.
 ## Related Documentation
 
 - dsPIC33AK128MC106 microcontroller (https://www.microchip.com/dsPIC33AK128MC106)
-- Emulating Data EEPROM for PIC18 and PIC24 MCUs and dsPIC33 DSCs (https://www.microchip.com/en-us/application-notes/an1095)
+- Emulating Data EEPROM for PIC18 and PIC24 MCUs and dsPIC33 DSCs (https://www.microchip.com/en-us/software-library/dspic33-pic24-data-eeprom-emulation)
 
 
 ## Software Used
@@ -63,5 +63,3 @@ If emulation fails then prints the message as shown below.
 | Device Family         | Procedure                  |
 | -----------           | -----------                |
 | Devices supported on Melody| 1. Create project <br> 2. Launch MCC <br> 3. "Data EEPROM Emulation Library "will be available under "Libraries", if not available use content manager to download it. <br>  <img src="images/DEEMelody.jpg" width="600">       |
-
-For more information refer: https://www.microchip.com/en-us/software-library/dspic33-pic24-data-eeprom-emulation
