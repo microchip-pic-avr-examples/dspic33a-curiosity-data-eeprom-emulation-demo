@@ -1,19 +1,19 @@
 /**
- * TRAPS Generated Driver Source File 
- * 
- * @file      traps.c
- *            
- * @ingroup   trapsdriver
- *            
- * @brief     This is the generated driver source file for TRAPS driver          
+ * TRAPS Generated Driver Source File
  *
- * @skipline @version   PLIB Version 1.0.1
- *            
+ * @file      traps.c
+ *
+ * @ingroup   trapsdriver
+ *
+ * @brief     This is the generated driver source file for TRAPS driver
+ *
+ * @skipline @version   PLIB Version 1.1.0
+ *
  * @skipline  Device : dsPIC33AK128MC106
 */
 
 /*
-© [2024] Microchip Technology Inc. and its subsidiaries.
+© [2025] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -37,8 +37,29 @@
 #include <xc.h>
 #include "../traps.h"
 
-#define ERROR_HANDLER __attribute__((interrupt,no_auto_psv))
+
+/* To identify the source of the trap, or the address of the source code causing the trap, please uncomment the
+  following line. When the code is executed by uncommenting the below line, the trapSrcAddr variable will contain
+  the address of the source code that, in the event that a trap occurs, is causing.*/
+
+/* #define FIND_TRAP_SOURCE */
+
+#ifdef FIND_TRAP_SOURCE
+void __attribute__((interrupt(preprologue("rcall _where_was_i ")), no_auto_psv)) _DefaultInterrupt(void);
+extern unsigned long trapSrcAddr;
+
+void __attribute__((interrupt(preprologue( "rcall _where_was_i ")), no_auto_psv)) _DefaultInterrupt(void)
+{
+   /* _trapSrcAddr variable will have the address of the trap source , print the value using UART or use debug watch */
+   while(1)
+   {
+
+   }
+}
+#else
+#define ERROR_HANDLER __attribute__((weak,interrupt,no_auto_psv))
 #define FAILSAFE_STACK_GUARDSIZE 8
+#define FAILSAFE_STACK_SIZE 32
 
 // A private place to store the error code if we run into a severe error
 
@@ -46,16 +67,16 @@ static uint16_t TRAPS_error_code = -1;
 
 // Section: Driver Interface Function Definitions
 
-//@brief Halts 
+//@brief Halts
 void __attribute__((weak)) TRAPS_halt_on_error(uint16_t code)
 {
     TRAPS_error_code = code;
-#ifdef __DEBUG    
+#ifdef __DEBUG
     /* If we are in debug mode, cause a software breakpoint in the debugger */
     __builtin_software_breakpoint();
     while(1)
     {
-    
+
     }
 #else
     // Trigger software reset
@@ -68,16 +89,16 @@ void __attribute__((weak)) TRAPS_halt_on_error(uint16_t code)
 
 inline static void use_failsafe_stack(void)
 {
-    static uint8_t failsafe_stack[32];
+    static uint8_t failsafe_stack[FAILSAFE_STACK_SIZE];
     asm volatile (
         "   mov    %[pstack], W15\n"
         :
         : [pstack]"r"(failsafe_stack)
     );
-    
+
     /* Controls where the stack pointer limit is, relative to the end of the
      * failsafe stack
-     */ 
+     */
     SPLIM = (uint32_t)(((uint8_t *)failsafe_stack) + sizeof(failsafe_stack) - (uint32_t) FAILSAFE_STACK_GUARDSIZE);
 }
 
@@ -128,8 +149,8 @@ void ERROR_HANDLER _StackErrorTrap(void)
      * means that we cannot trust the stack to operate correctly unless
      * we set the stack pointer to a safe place.
      */
-    //use_failsafe_stack(); //To do
-    
+    use_failsafe_stack();
+
     INTCON1bits.STKERR = 0;  //Clear the trap flag
     TRAPS_halt_on_error(TRAPS_STACK_ERR);
 }
@@ -148,3 +169,4 @@ void ERROR_HANDLER _IllegalInstructionTrap(void)
     TRAPS_halt_on_error(TRAPS_ILLEGALINSTRUCTION);
 }
 
+#endif
