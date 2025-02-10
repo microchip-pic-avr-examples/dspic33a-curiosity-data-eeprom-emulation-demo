@@ -10,7 +10,7 @@
  *
  * @skipline @version   Firmware Driver Version 1.0.0
  *
- * @skipline @version   PLIB Version 1.0.1
+ * @skipline @version   PLIB Version 1.0.2
  *
  * @skipline    Device : dsPIC33AK128MC106
 */
@@ -53,7 +53,7 @@
  @ingroup  flashdriver
  @brief    Defines FLASH erase page mask
 */
-#define  FLASH_ERASE_PAGE_MASK  (~(FLASH_ERASE_PAGE_SIZE_IN_INSTRUCTIONS - 1U))
+#define  FLASH_ERASE_PAGE_MASK  (~((FLASH_ERASE_PAGE_SIZE_IN_INSTRUCTIONS * 4U) - 1U))
 
 typedef void (*FLASH_CALLBACK)(void *);
 

@@ -1,3 +1,9 @@
+# dspic33a-curiosity-data-eeprom-emulation-demo v1.0.2
+### Release Highlights
+
+Patch release to to use the latest DEE library generated code.
+
+### Features Added\Updated
 # dspic33a-curiosity-data-eeprom-emulation-demo v1.0.1
 ### Release Highlights
 

@@ -1,5 +1,5 @@
 /*
-© [2024] Microchip Technology Inc. and its subsidiaries.
+© [2025] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -266,7 +266,7 @@ DEE_RETURN_STATUS DEE_Write(uint16_t addr, uint32_t data)
     uint16_t currentPage;
     uint32_t pageAddress; //Current array (page) offset of selected element (PM 16-bit word)
     uint16_t nextLoc;
-    volatile uint16_t latchData;
+    volatile uint32_t latchData;
     volatile uint8_t latchAddr;
     uint8_t dataEEFlags_sh;
     uint16_t bank;
@@ -369,7 +369,7 @@ DEE_RETURN_STATUS DEE_Write(uint16_t addr, uint32_t data)
     }
 
     //Pack if page is full
-    if ((nextLoc + ADDRESS_INC_FACTOR) >= ((NUMBER_OF_INSTRUCTIONS_IN_PAGE * WORD_WRITE_SIZE)))
+    if ((nextLoc + ADDRESS_INC_FACTOR) == ((NUMBER_OF_INSTRUCTIONS_IN_PAGE * WORD_WRITE_SIZE)))
     {
         status = DEE_Pack(bank);
     }
