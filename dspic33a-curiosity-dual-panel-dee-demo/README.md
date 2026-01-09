@@ -19,7 +19,7 @@ This code example demonstrates the usage of Data EEPROM Emulation Library.
 
 ## Related Documentation
 
-- dsPIC33AK128MC106 microcontroller (https://www.microchip.com/dsPIC33AK128MC106)
+- dsPIC33AK512MPS512 microcontroller (https://www.microchip.com/dsPIC33AK512MPS512)
 - Emulating Data EEPROM for PIC18 and PIC24 MCUs and dsPIC33 DSCs (https://www.microchip.com/en-us/software-library/dspic33-pic24-data-eeprom-emulation)
 
 
