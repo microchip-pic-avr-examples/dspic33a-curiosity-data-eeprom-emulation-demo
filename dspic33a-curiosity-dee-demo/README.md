@@ -1,6 +1,6 @@
 ![image](images/microchip.jpg)
 
-## dsPIC33A Curiosity Data EEPROM Emulation Demo
+## dsPIC33A Curiosity Data EEPROM Emulation Demo(Single partition)
 
 
 ## Summary
