@@ -130,7 +130,7 @@
                         DD="dist/default/debug/dee_dual_panel_partition2.X.debug.elf">
           </makeArtifact>
           <useAlternateLoadableFile>false</useAlternateLoadableFile>
-          <parseOnProdLoad>true</parseOnProdLoad>
+          <parseOnProdLoad>false</parseOnProdLoad>
           <alternateLoadableFile></alternateLoadableFile>
         </loading>
         <subordinates>
