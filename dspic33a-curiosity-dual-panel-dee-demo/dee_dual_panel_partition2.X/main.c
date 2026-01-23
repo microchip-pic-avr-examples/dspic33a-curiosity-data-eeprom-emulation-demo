@@ -30,7 +30,8 @@
 #define RED     "\033[0;31m"                            // Selects red font face
 #define GREEN   "\033[0;32m"                            // Selects green font face
 #define LOOPCOUNT 1200
-#define DATA 0x12345678
+#define DATA 0xABCD1234
+#define PREVIOUS_DATA 0x12345678
 
 void __attribute__((address(__PROGRAM_BASE), keep, naked, noinline)) executionSwitch(void) {
     asm volatile("\n    mov.sl      #%0, w1"            
@@ -47,13 +48,13 @@ int main(void) {
     uint32_t valueAtAddr0 = 0;
     uint32_t valueAtAddr1 = 0;
     uint32_t valueAtAddr2 = 0;
-    uint32_t expectedValueAtAddr0 = DATA+LOOPCOUNT;
-    uint32_t expectedValueAtAddr1 = DATA+LOOPCOUNT+1;
-    uint32_t expectedValueAtAddr2 = DATA+LOOPCOUNT+2;
+    uint32_t expectedValueAtAddr0 = PREVIOUS_DATA+LOOPCOUNT;
+    uint32_t expectedValueAtAddr1 = PREVIOUS_DATA+LOOPCOUNT+1;
+    uint32_t expectedValueAtAddr2 = PREVIOUS_DATA+LOOPCOUNT+2;
 
     SYSTEM_Initialize();
     printf(NORMAL"\r\n\r\n\r\n Application in Partition2 :Data EEPROM Emulation is in progress...\r\n");
-    //DEE_Init();
+    DEE_Init();
             
     printf(NORMAL" Application in Partition2 : Checking whether DEE data available from the previous iteration in the other partition...\r\n");            
 
@@ -68,6 +69,29 @@ int main(void) {
         printf(RED" Application in Partition2: Data EEPROM Emulation failed.\r\n");
         printf(NORMAL" Value at address 0 is 0x%X \r\n Value at address 1 is 0x%X \r\n Value at address 2 is 0x%X \r\n", valueAtAddr0, valueAtAddr1, valueAtAddr2);
     }
+    
+    expectedValueAtAddr0 = DATA+LOOPCOUNT;
+    expectedValueAtAddr2 = DATA+LOOPCOUNT+1;
+    
+    printf(NORMAL"\r\n Writing some more data to address 0 and address 2(no updates to address 1). Data EEPROM Emulation is in progress...\r\n");
+    
+    for (i = 0; i < LOOPCOUNT; i++) {
+        DEE_Write(addr0, DATA + i + 1);
+        DEE_Write(addr2, DATA + i + 2);
+    }
+    
+    DEE_Read(addr0, &valueAtAddr0);
+    DEE_Read(addr1, &valueAtAddr1);
+    DEE_Read(addr2, &valueAtAddr2);
+    
+    if (valueAtAddr0 == expectedValueAtAddr0 && valueAtAddr1 == expectedValueAtAddr1 && valueAtAddr2 == expectedValueAtAddr2) {
+        printf(GREEN" Application in Partition2: Data EEPROM Emulation successful.\r\n");
+        printf(NORMAL" Value at address 0 is 0x%X \r\n Value at address 1 is 0x%X \r\n Value at address 2 is 0x%X \r\n", valueAtAddr0, valueAtAddr1, valueAtAddr2);
+    } else {
+        printf(RED" Application in Partition2: Data EEPROM Emulation failed.\r\n");
+        printf(NORMAL" Value at address 0 is 0x%X \r\n Value at address 1 is 0x%X \r\n Value at address 2 is 0x%X \r\n", valueAtAddr0, valueAtAddr1, valueAtAddr2);
+    }
+    
     while(1);
     return 0;
 
