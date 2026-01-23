@@ -18,7 +18,7 @@ uses available program memory and can improve endurance by a factor as high as 5
 This repository contains code examples which demonstrates DEE functionality in single and dual panel devices.
 
 ## Related Documentation
-Please refer the readme of individual code examples for the more details.
+Please refer the readme of individual code examples for more details.
 
 
 ## Accessing Data EEPROM Emulation Library
