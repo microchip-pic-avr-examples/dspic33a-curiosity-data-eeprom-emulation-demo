@@ -14,26 +14,44 @@
       },
       "compiler":{
          "name":"XCDSC",
-         "semverRange":"^3.30.0"
+         "semverRange":"^3.31.0"
       },
-      "dfp":{
-         "name":"dsPIC33AK-MC_DFP",
-         "semverRange":">=1.0.33"
-      },
+      "dfp": [
+                {
+                    "name":"dsPIC33AK-MC_DFP",
+                    "semverRange":">=1.0.33"
+                },
+                {
+                    "name": "dsPIC33AK-MP_DFP",
+                    "semverRange": "^1.2.135"
+                }
+      ],
 	  "configurator": {
          "name": "MCC",
          "semverRange": ">=4.0.1"
       },
-      "device":{
-         "metaDataVersion":"1.0.0",
-         "category":"com.microchip.portal.contentRef",
-         "content":{
-            "metaDataVersion":"1.0.0",
-            "category":"com.microchip.device",
-            "name":"dsPIC33AK128MC106",
-            "versionRange":"*"
-         }
-      },
+      "device": [
+                {
+                    "metaDataVersion": "1.0.0",
+                    "category": "com.microchip.portal.contentRef",
+                    "content": {
+                        "metaDataVersion": "1.0.0",
+                        "category": "com.microchip.device",
+                        "name": "dsPIC33AK128MC106",
+                        "versionRange": "*"
+                    }
+                },
+                {
+                    "metaDataVersion": "1.0.0",
+                    "category": "com.microchip.portal.contentRef",
+                    "content": {
+                        "metaDataVersion": "1.0.0",
+                        "category": "com.microchip.device",
+                        "name": "dsPIC33AK512MPS512",
+                        "versionRange": "*"
+                    }
+                }
+      ],
       "peripherals": [
          "UART",
          "FLASH"

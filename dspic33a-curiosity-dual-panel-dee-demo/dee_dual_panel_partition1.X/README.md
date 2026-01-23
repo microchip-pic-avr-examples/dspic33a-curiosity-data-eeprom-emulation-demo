@@ -15,7 +15,7 @@ The alternate solution of using an external, serial EEPROM device may not be app
 This Data EEPROM Emulation library presents a third alternative that addresses these issues. This library features an interface similar to an internal data EEPROM, which
 uses available program memory and can improve endurance by a factor as high as 500.
 
-This code example demonstrates the usage of Data EEPROM Emulation Library in dual panel device.
+This code example demonstrates the usage of Data EEPROM Emulation Library.
 
 ## Related Documentation
 

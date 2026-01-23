@@ -17,8 +17,8 @@
          "semverRange":"^3.30.0"
       },
       "dfp":{
-         "name":"dsPIC33AK-MC_DFP",
-         "semverRange":">=1.0.33"
+         "name":"dsPIC33AK-MP_DFP",
+         "semverRange":">=1.2.135"
       },
       "configurator": {
          "name": "MCC",
