@@ -8,7 +8,7 @@
             <make-project-type>0</make-project-type>
             <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects>
-                <make-dep-project>C:/Projects/MCU16CE/dspic33a-curiosity-data-eeprom-emulation-demo/dspic33a-curiosity-dual-panel-dee-demo/dee_dual_panel_partition2.X</make-dep-project>
+                <make-dep-project>../dee_dual_panel_partition2.X</make-dep-project>
             </make-dep-projects>
             <sourceRootList/>
             <confList>

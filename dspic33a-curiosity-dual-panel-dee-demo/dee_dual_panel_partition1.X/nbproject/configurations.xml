@@ -114,12 +114,12 @@
         <archiverTool>
         </archiverTool>
         <loading>
-          <makeArtifact PL="C:/Projects/MCU16CE/dspic33a-curiosity-data-eeprom-emulation-demo/dspic33a-curiosity-dual-panel-dee-demo/dee_dual_panel_partition2.X"
+          <makeArtifact PL="../dee_dual_panel_partition2.X"
                         CT="1"
                         CN="default"
                         AC="true"
                         BL="true"
-                        WD="C:/Projects/MCU16CE/dspic33a-curiosity-data-eeprom-emulation-demo/dspic33a-curiosity-dual-panel-dee-demo/dee_dual_panel_partition2.X"
+                        WD="../dee_dual_panel_partition2.X"
                         BC="${MAKE}  -f Makefile CONF=default"
                         DBC="${MAKE}  -f Makefile CONF=default TYPE_IMAGE=DEBUG_RUN"
                         CC="rm -rf &quot;build/default&quot; &quot;dist/default&quot;"
@@ -536,6 +536,8 @@
                   value="${memories.instruction.ram.ranges}"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="800000-87ffff"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/Projects/MCU16CE/dspic33a-curiosity-data-eeprom-emulation-demo/dspic33a-curiosity-dual-panel-dee-demo/dee_dual_panel_partition1.X/debug/default/dee_dual_panel_partition1_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.pgmentry.voltage" value="low"/>
