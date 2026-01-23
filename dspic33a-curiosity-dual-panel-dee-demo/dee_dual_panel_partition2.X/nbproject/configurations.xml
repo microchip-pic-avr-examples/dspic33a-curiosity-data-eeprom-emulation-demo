@@ -100,13 +100,13 @@
         <targetDevice>dsPIC33AK512MPS512</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>pkob4hybrid</platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XCDSC</languageToolchain>
         <languageToolchainVersion>3.31.00</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="dsPIC33AK-MP_DEV_DFP" vendor="Microchip" version="0.1.306"/>
+        <pack name="dsPIC33AK-MP_DFP" vendor="Microchip" version="1.2.135"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
