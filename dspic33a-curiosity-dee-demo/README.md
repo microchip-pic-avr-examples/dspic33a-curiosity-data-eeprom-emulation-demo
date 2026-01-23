@@ -62,4 +62,4 @@ If emulation fails then prints the message as shown below.
 
 | Device Family         | Procedure                  |
 | -----------           | -----------                |
-| Devices supported on Melody| 1. Create project <br> 2. Launch MCC <br> 3. "Data EEPROM Emulation Library "will be available under "Libraries", if not available use content manager to download it. <br>  <img src="images/DEEMelody.jpg" width="600">       |
+| Devices supported on Melody| 1. Create project <br> 2. Launch MCC <br> 3. "Data EEPROM Emulation Library "will be available under "Libraries", if not available use content manager to download it. <br>  <img src="../images/DEEMelody.jpg" width="600">       |

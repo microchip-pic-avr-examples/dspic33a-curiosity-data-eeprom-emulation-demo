@@ -26,7 +26,7 @@ This code example demonstrates the usage of Data EEPROM Emulation Library in dua
 ## Software Used
 
 - MPLAB® X IDE v6.25 or newer (https://www.microchip.com/mplabx)
-- MPLAB® XCDSC v3.30 or newer (https://www.microchip.com/xcdsc)
+- MPLAB® XCDSC v3.31 or newer (https://www.microchip.com/xcdsc)
 - Any of the serial terminal application. Example: Tera Term (https://ttssh2.osdn.jp/index.html.en)
 
 
