@@ -10,7 +10,7 @@
  *
  * @skipline @version   Firmware Driver Version 1.0.0
  *
- * @skipline @version   PLIB Version 1.0.2
+ * @skipline @version   PLIB Version 1.0.4
  *
  * @skipline    Device : dsPIC33AK128MC106
 */

@@ -10,7 +10,7 @@
  * @skipline  Device : dsPIC33AK128MC106
 */
 /*
-© [2025] Microchip Technology Inc. and its subsidiaries.
+© [2026] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -31,6 +31,7 @@
 */
 
 #include "../system.h"
+#include "../system_types.h"
 #include "../clock.h"
 #include "../pins.h"
 #include "../dmt.h"
