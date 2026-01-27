@@ -7,13 +7,13 @@
  * 
  * @brief     This is the generated driver types header file for the CLOCK driver
  *
- * @version   PLIB Version 1.1.0
+ * @skipline @version   PLIB Version 1.3.1
  *
  * @skipline  Device : dsPIC33AK128MC106
 */
 
 /*
-© [2025] Microchip Technology Inc. and its subsidiaries.
+© [2026] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -41,11 +41,19 @@
  @enum     CLOCK_GENERATOR
  @brief    CLOCK generator instances
 */
+/* cppcheck-suppress misra-c2012-8.12
+*
+* (Rule 8.12) REQUIRED: Within an enumerator list, the value of an implicitly-specified 
+* enumeration constant shall be unique
+*
+* Reasoning: Enum members are created to reflect the hardware settings and to provide 
+* clear usage of API without impacting the functionality.
+*/
 enum CLOCK_GENERATOR
 {
-    CLOCK_GENERATOR_1,    /**< Clock Generator 1 */
-    CLOCK_GENERATOR_2,    /**< Clock Generator 2 */
-    CLOCK_GENERATOR_3,    /**< Clock Generator 3 */
+    CLOCK_GENERATOR_1 = 1,    /**< Clock Generator 1 */
+    CLOCK_GENERATOR_2 = 2,    /**< Clock Generator 2 */
+    CLOCK_GENERATOR_3 = 3,    /**< Clock Generator 3 */
     
     CLOCK_SYSTEM = 1,    /**< Clock for System */
     CLOCK_FRC = 2,    /**< Clock for FRC */

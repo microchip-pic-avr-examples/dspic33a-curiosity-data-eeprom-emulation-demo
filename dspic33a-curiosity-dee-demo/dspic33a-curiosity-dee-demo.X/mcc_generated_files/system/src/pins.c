@@ -7,13 +7,13 @@
  *            
  * @brief     This is the generated driver source file for PINS driver.
  *
- * @skipline @version   PLIB Version 1.0.1
+ * @skipline @version   PLIB Version 1.0.5
  *
  * @skipline  Device : dsPIC33AK128MC106
 */
 
 /*
-© [2025] Microchip Technology Inc. and its subsidiaries.
+© [2026] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -39,20 +39,6 @@
 #include "../pins.h"
 
 // Section: File specific functions
-
-/**
- * @ingroup  pinsdriver
- * @brief    Locks all the Peripheral Remapping registers and cannot be written.
- * @return   none  
- */
-#define PINS_PPSLock()           (RPCONbits.IOLOCK = 1)
-
-/**
- * @ingroup  pinsdriver
- * @brief    Unlocks all the Peripheral Remapping registers and can be written.
- * @return   none  
- */
-#define PINS_PPSUnlock()         (RPCONbits.IOLOCK = 0)
 
 // Section: Driver Interface Function Definitions
 void PINS_Initialize(void)

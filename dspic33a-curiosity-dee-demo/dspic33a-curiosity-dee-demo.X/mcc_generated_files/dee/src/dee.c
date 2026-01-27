@@ -1,5 +1,5 @@
 /*
-© [2025] Microchip Technology Inc. and its subsidiaries.
+© [2026] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -534,7 +534,7 @@ DEE_RETURN_STATUS DEE_Pack(uint8_t bank)
     return (GetPageExpiredPage());
 }
 
-uint8_t DEE_GetPageStatus(uint8_t bank, uint8_t page, uint8_t field)
+static uint8_t DEE_GetPageStatus(uint8_t bank, uint8_t page, uint8_t field)
 {
     uint32_t pageAddress;
     uint8_t statusByte;
@@ -562,24 +562,24 @@ uint8_t DEE_GetPageStatus(uint8_t bank, uint8_t page, uint8_t field)
     return (status);
 }
 
-void DEE_FlashPageErase(uint8_t bank, uint8_t page)
+static void DEE_FlashPageErase(uint8_t bank, uint8_t page)
 {
     uint32_t pageAddress = DEE_PAGE_ADDRESS(bank, page);
     FLASH_PageErase(pageAddress, FLASH_UNLOCK_KEY);
     return;
 }
 
-void DEE_FlashWrite(uint32_t pageAddress, uint32_t *data)
+static void DEE_FlashWrite(flash_adr_t pageAddress, uint32_t *data)
 {
     FLASH_WordWrite(pageAddress, data, FLASH_UNLOCK_KEY);
 }
 
-void DEE_FlashRead(uint32_t pageAddress, size_t count, uint32_t *data)
+static void DEE_FlashRead(flash_adr_t pageAddress, size_t count, uint32_t *data)
 {
     FLASH_Read(pageAddress, count, data);
 }
 
-uint16_t DEE_GetNextAvailCount(uint8_t bank)
+static uint16_t DEE_GetNextAvailCount(uint8_t bank)
 {
     uint16_t nextAvailCount = 0;
     uint16_t currentPage;
