@@ -1,3 +1,11 @@
+# dspic33a-curiosity-data-eeprom-emulation-demo v1.0.3
+### Release Highlights
+
+Added a code example to demonstrate Data EEPROM Emulation on a dual partition device.
+
+### Features Added\Updated
+
+
 # dspic33a-curiosity-data-eeprom-emulation-demo v1.0.2
 ### Release Highlights
 
