@@ -1,19 +1,19 @@
 /**
  * UART1 Generated Driver Source File
  * 
- * @file        uart1.c
- *  
- * @ingroup     uartdriver
- *  
- * @brief       This is the generated driver source file for the UART1 driver
+ * @file      uart1.c
+ *            
+ * @ingroup   uartdriver
+ *            
+ * @brief     This is the generated driver source file for the UART1 driver.
  *
- * @skipline @version     PLIB Version 1.0.1
- *
- * @skipline    Device : dsPIC33AK128MC106
+ * @skipline @version   PLIB Version 1.1.2
+ *            
+ * @skipline  Device : dsPIC33AK128MC106
 */
 
 /*
-© [2025] Microchip Technology Inc. and its subsidiaries.
+© [2026] Microchip Technology Inc. and its subsidiaries.
 
     Subject to your compliance with these terms, you may use Microchip 
     software and any derivatives exclusively with Microchip products. 
@@ -34,10 +34,10 @@
 */
 
 // Section: Included Files
-#include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <xc.h>
+#include <stddef.h>
 #include "../uart1.h"
 
 // Section: Macro Definitions
@@ -74,17 +74,15 @@ const struct UART_INTERFACE UART1_Drv = {
     .BaudRateSet = &UART1_BaudRateSet,
     .BaudRateGet = &UART1_BaudRateGet,
     .ErrorGet = &UART1_ErrorGet,
-    .RxCompleteCallbackRegister = &UART1_RxCompleteCallbackRegister,
-    .TxCompleteCallbackRegister = &UART1_TxCompleteCallbackRegister,
-    .TxCollisionCallbackRegister = &UART1_TxCollisionCallbackRegister,
-    .FramingErrorCallbackRegister = &UART1_FramingErrorCallbackRegister,
-    .OverrunErrorCallbackRegister = &UART1_OverrunErrorCallbackRegister,
-    .ParityErrorCallbackRegister = &UART1_ParityErrorCallbackRegister,
+    .RxCompleteCallbackRegister = NULL,
+    .TxCompleteCallbackRegister = NULL,
+    .TxCollisionCallbackRegister = NULL,
+    .FramingErrorCallbackRegister = NULL,
+    .OverrunErrorCallbackRegister = NULL,
+    .ParityErrorCallbackRegister = NULL,
 };
 
 // Section: Private Variable Definitions
-
-static volatile bool softwareBufferEmpty = true;
 static union
 {
     struct
@@ -99,95 +97,21 @@ static union
     size_t status;
 } uartError;
 
-// Section: Data Type Definitions
-
-/**
- @ingroup  uartdriver
- @static   UART Driver Queue Status
- @brief    Defines the object required for the status of the queue
-*/
-static uint8_t * volatile rxTail;
-static uint8_t *rxHead;
-static uint8_t *txTail;
-static uint8_t * volatile txHead;
-static bool volatile rxOverflowed;
-
-/**
- @ingroup  uartdriver
- @brief    Defines the length of the Transmit and Receive Buffers
-*/
-
-/* We add one extra byte than requested so that we don't have to have a separate
- * bit to determine the difference between buffer full and buffer empty, but
- * still be able to hold the amount of data requested by the user.  Empty is
- * when head == tail.  So full will result in head/tail being off by one due to
- * the extra byte.
- */
-#define UART1_CONFIG_TX_BYTEQ_LENGTH (8+1)
-#define UART1_CONFIG_RX_BYTEQ_LENGTH (8+1)
-
-/**
- @ingroup  uartdriver
- @static   UART Driver Queue
- @brief    Defines the Transmit and Receive Buffers
-*/
-static uint8_t txQueue[UART1_CONFIG_TX_BYTEQ_LENGTH];
-static uint8_t rxQueue[UART1_CONFIG_RX_BYTEQ_LENGTH];
-
-static void (*UART1_RxCompleteHandler)(void);
-static void (*UART1_TxCompleteHandler)(void);
-static void (*UART1_TxCollisionHandler)(void);
-static void (*UART1_FramingErrorHandler)(void);
-static void (*UART1_OverrunErrorHandler)(void);
-static void (*UART1_ParityErrorHandler)(void);
-
-// Section: Driver Interface
+// Section: UART1 APIs
 
 void UART1_Initialize(void)
 {
-    IEC2bits.U1TXIE = 0;
-    IEC2bits.U1RXIE = 0;
-    IEC2bits.U1EVTIE = 0;
-
+/*    
+     Set the UART1 module to the options selected in the user interface.
+     Make sure to set LAT bit corresponding to TxPin as high before UART initialization
+*/
     // MODE Asynchronous 8-bit UART; RXEN ; TXEN ; ABDEN ; BRGS ; SENDB ; BRKOVR ; RXBIMD ; WUE ; SIDL ; ON disabled; FLO ; TXPOL ; C0EN ; STP 1 Stop bit sent, 1 checked at RX; RXPOL ; RUNOVF ; HALFDPLX ; CLKSEL Standard Speed Peripheral Clock; CLKMOD enabled; ACTIVE ; SLPEN ; 
     U1CON = 0x8000000UL;
-    // TXCIF ; RXFOIF ; RXBKIF ; CERIF ; ABDOVIF ; TXCIE ; RXFOIE ; RXBKIE ; FERIE ; CERIE ; ABDOVIE ; PERIE ; TXMTIE ; STPMD ; TXWRE ; RXWM ; TXWM TX_BUF_EMPTY; 
+    // TXCIF ; RXFOIF ; RXBKIF ; CERIF ; ABDOVIF ; TXCIE ; RXFOIE ; RXBKIE ; FERIE ; CERIE ; ABDOVIE ; PERIE ; TXMTIE ; STPMD ; TXWRE ; RXWM ; TXWM ; 
     U1STAT = 0x2E0080UL;
     // BaudRate 9592.33; Frequency 4000000 Hz; BRG 417; 
     U1BRG = 0x1A1UL;
     
-    txHead = txQueue;
-    txTail = txQueue;
-    rxHead = rxQueue;
-    rxTail = rxQueue;
-   
-    rxOverflowed = false;
-    
-    UART1_RxCompleteCallbackRegister(&UART1_RxCompleteCallback);
-    UART1_TxCompleteCallbackRegister(&UART1_TxCompleteCallback);
-    UART1_TxCollisionCallbackRegister(&UART1_TxCollisionCallback);
-    UART1_FramingErrorCallbackRegister(&UART1_FramingErrorCallback);
-    UART1_OverrunErrorCallbackRegister(&UART1_OverrunErrorCallback);
-    UART1_ParityErrorCallbackRegister(&UART1_ParityErrorCallback);
-
-    // UART Frame error interrupt
-    U1STATbits.FERIF = 1;
-    // UART Parity error interrupt
-    U1STATbits.PERIF = 1;
-    // UART Receive Buffer Overflow interrupt
-    U1STATbits.RXFOIE = 1;
-    // UART Transmit collision interrupt
-    U1STATbits.TXCIE = 1;
-    // UART Auto-Baud Overflow interrupt
-    U1STATbits.ABDOVIE = 1;  
-    // UART Receive Interrupt
-    IEC2bits.U1RXIE = 1;
-    // UART Event interrupt
-    IEC2bits.U1EVTIE = 1;
-    // UART Error interrupt
-    IEC2bits.U1EIE    = 1;
-    
-    //Make sure to set LAT bit corresponding to TxPin as high before UART initialization
     U1CONbits.ON = 1;   // enabling UART ON bit
     U1CONbits.TXEN = 1;
     U1CONbits.RXEN = 1;
@@ -195,22 +119,6 @@ void UART1_Initialize(void)
 
 void UART1_Deinitialize(void)
 {
-    // UART Transmit interrupt
-    IFS2bits.U1TXIF = 0;
-    IEC2bits.U1TXIE = 0;
-    
-    // UART Receive Interrupt
-    IFS2bits.U1RXIF = 0;
-    IEC2bits.U1RXIE = 0;
-    
-    // UART Event interrupt
-    IFS2bits.U1EVTIF = 0;
-    IEC2bits.U1EVTIE = 0;
-    
-    // UART Error interrupt
-    IFS2bits.U1EIF = 0;
-    IEC2bits.U1EIE    = 0;
-    
     U1CON = 0x0UL;
     U1STAT = 0x2E0080UL;
     U1BRG = 0x0UL;
@@ -218,73 +126,42 @@ void UART1_Deinitialize(void)
 
 uint8_t UART1_Read(void)
 {
-    uint8_t data = 0;
+    while((U1STATbits.RXBE == 1))
+    {
+        
+    }
 
-    if(rxHead != rxTail)
-	{
-		data = *rxHead;
-
-		rxHead++;
-
-		if (rxHead == &rxQueue[UART1_CONFIG_RX_BYTEQ_LENGTH])
-		{
-			rxHead = rxQueue;
-		}
-	}
-    return data;
+    if ((U1STATbits.RXFOIF == 1))
+    {
+        U1STATbits.RXFOIF = 0;
+    }
+    
+    return U1RXB;
 }
 
-void UART1_Write(uint8_t byte)
+void UART1_Write(uint8_t txData)
 {
-    while(UART1_IsTxReady() == 0)
+    while(U1STATbits.TXBF == 1)
     {
-    }
-
-    *txTail = byte;
-
-    txTail++;
         
-    if (txTail == &txQueue[UART1_CONFIG_TX_BYTEQ_LENGTH])
-    {
-        txTail = txQueue;
     }
 
-    IEC2bits.U1TXIE = 1;
-    softwareBufferEmpty = false;
+    U1TXB = txData;    // Write the data byte to the USART.
 }
 
 bool UART1_IsRxReady(void)
-{    
-    return !(rxHead == rxTail);
+{
+    return (U1STATbits.RXBE == 0);
 }
 
 bool UART1_IsTxReady(void)
 {
-    uint16_t size;
-    uint8_t *snapshot_txHead = (uint8_t*)txHead;
-    
-    if (txTail < snapshot_txHead)
-    {
-        size = (snapshot_txHead - txTail - 1);
-    }
-    else
-    {
-        size = ( UART1_CONFIG_TX_BYTEQ_LENGTH - (txTail - snapshot_txHead) - (uint16_t)1 );
-    }
-    
-    return (size != (uint16_t)0);
+    return ((!U1STATbits.TXBF) && U1CONbits.TXEN);
 }
 
 bool UART1_IsTxDone(void)
 {
-    bool status = false;
-    
-    if(txTail == txHead)
-    {
-        status = (bool)(U1STATbits.TXMTIF && U1STATbits.TXBE);
-    }
-    
-    return status;
+    return (bool)(U1STATbits.TXMTIF && U1STATbits.TXBE);
 }
 
 void UART1_TransmitEnable(void)
@@ -314,6 +191,35 @@ bool UART1_AutoBaudEventEnableGet(void)
     return U1UIRbits.ABDIE; 
 }
 
+size_t UART1_ErrorGet(void)
+{
+    uartError.status = 0;
+    if(U1STATbits.FERIF == 1U)
+    {
+        uartError.status = uartError.status|(uint16_t)UART_ERROR_FRAMING_MASK;
+    }
+    if(U1STATbits.PERIF== 1U)
+    {
+        uartError.status = uartError.status|(uint16_t)UART_ERROR_PARITY_MASK;
+    }
+    if(U1STATbits.RXFOIF== 1U)
+    {
+        uartError.status = uartError.status|(uint16_t)UART_ERROR_RX_OVERRUN_MASK;
+        U1STATbits.RXFOIF = 0;
+    }
+    if(U1STATbits.TXCIF== 1U)
+    {
+        uartError.status = uartError.status|(uint16_t)UART_ERROR_TX_COLLISION_MASK;
+        U1STATbits.TXCIF = 0;
+    }
+    if(U1STATbits.ABDOVIF== 1U)
+    {
+        uartError.status = uartError.status|(uint16_t)UART_ERROR_AUTOBAUD_OVERFLOW_MASK;
+        U1STATbits.ABDOVIF = 0;
+    }
+    
+    return uartError.status;
+}
 
 void UART1_BRGCountSet(uint32_t brgValue)
 {
@@ -342,7 +248,6 @@ void UART1_BaudRateSet(uint32_t baudRate)
         brgValue = UART1_BAUD_TO_BRG_WITH_BRGS_1(baudRate);
     }
     U1BRG = brgValue;
-
 }
 
 uint32_t UART1_BaudRateGet(void)
@@ -364,234 +269,4 @@ uint32_t UART1_BaudRateGet(void)
         baudRate = UART1_BRG_TO_BAUD_WITH_BRGS_0(brgValue);
     }
     return baudRate;
-}
-
-size_t UART1_ErrorGet(void)
-{
-    size_t fetchUartError = uartError.status;
-    uartError.status = 0;
-    return fetchUartError;
-}
-
-void UART1_RxCompleteCallbackRegister(void (*handler)(void))
-{
-    if(NULL != handler)
-    {
-        UART1_RxCompleteHandler = handler;
-    }
-}
-
-void __attribute__ ((weak)) UART1_RxCompleteCallback(void)
-{ 
-
-} 
-
-void UART1_TxCompleteCallbackRegister(void (*handler)(void))
-{
-    if(NULL != handler)
-    {
-        UART1_TxCompleteHandler = handler;
-    }
-}
-
-void __attribute__ ((weak)) UART1_TxCompleteCallback(void)
-{ 
-
-} 
-
-void UART1_TxCollisionCallbackRegister(void (*handler)(void))
-{
-    if(NULL != handler)
-    {
-        UART1_TxCollisionHandler = handler;
-    }
-}
-
-void __attribute__ ((weak)) UART1_TxCollisionCallback(void)
-{ 
-
-} 
-
-void UART1_FramingErrorCallbackRegister(void (*handler)(void))
-{
-    if(NULL != handler)
-    {
-        UART1_FramingErrorHandler = handler;
-    }
-}
-
-void __attribute__ ((weak)) UART1_FramingErrorCallback(void)
-{ 
-
-} 
-
-void UART1_OverrunErrorCallbackRegister(void (*handler)(void))
-{
-    if(NULL != handler)
-    {
-        UART1_OverrunErrorHandler = handler;
-    }
-}
-
-void __attribute__ ((weak)) UART1_OverrunErrorCallback(void)
-{ 
-
-} 
-
-void UART1_ParityErrorCallbackRegister(void (*handler)(void))
-{
-    if(NULL != handler)
-    {
-        UART1_ParityErrorHandler = handler;
-    }
-}
-
-void __attribute__ ((weak)) UART1_ParityErrorCallback(void)
-{ 
-
-} 
-
-void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1TXInterrupt(void)
-{
-
-    if(txHead == txTail)
-    {
-                if(NULL != UART1_TxCompleteHandler)
-            {
-                (*UART1_TxCompleteHandler)();
-            }
-                                                IEC2bits.U1TXIE = 0;
-        softwareBufferEmpty = true;
-    }
-    else
-    {
-
-        while(!(U1STATbits.TXBF == 1))
-        {
-            U1TXB = *txHead;
-            txHead++;
-
-            if(txHead == &txQueue[UART1_CONFIG_TX_BYTEQ_LENGTH])
-            {
-                txHead = txQueue;
-            }
-
-            // Are we empty?
-            if(txHead == txTail)
-            {
-                break;
-            }
-        }
-    }
-}
-
-void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1RXInterrupt(void)
-{
-    size_t rxQueueSize = 0;
-    uint8_t *rxTailPtr = NULL;
-    
-    IFS2bits.U1RXIF = 0;
-    
-    while(!(U1STATbits.RXBE == 1))
-    {
-        *rxTail = U1RXB;
-
-        rxQueueSize = UART1_CONFIG_RX_BYTEQ_LENGTH - 1;
-        rxTailPtr = rxTail;
-        rxTailPtr++;
-        // Will the increment not result in a wrap and not result in a pure collision?
-        // This is most often condition so check first
-        if ((rxTail != &rxQueue[rxQueueSize]) && (rxTailPtr != rxHead))
-        {
-            rxTail++;
-        } 
-        else if ( (rxTail == &rxQueue[rxQueueSize]) &&
-                  (rxHead !=  rxQueue) )
-        {
-            // Pure wrap no collision
-            rxTail = rxQueue;
-        } 
-        else // must be collision
-        {
-            rxOverflowed = true;
-        }
-    }
-	
-    if(NULL != UART1_RxCompleteHandler)
-    {
-        (*UART1_RxCompleteHandler)();
-    }
-}
-
-void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1EInterrupt(void)
-{
-    if (U1STATbits.ABDOVIF == 1)
-    {
-        uartError.status = uartError.status|(uint16_t)UART_ERROR_AUTOBAUD_OVERFLOW_MASK;
-        U1STATbits.ABDOVIF = 0;
-    }
-    
-    if (U1STATbits.TXCIF == 1)
-    {
-        uartError.status = uartError.status|(uint16_t)UART_ERROR_TX_COLLISION_MASK;
-        if(NULL != UART1_TxCollisionHandler)
-        {
-            (*UART1_TxCollisionHandler)();
-        }
-        
-        U1STATbits.TXCIF = 0;
-    }
-    
-    if (U1STATbits.RXFOIF == 1)
-    {
-        uartError.status = uartError.status|(uint16_t)UART_ERROR_RX_OVERRUN_MASK;
-        if(NULL != UART1_OverrunErrorHandler)
-        {
-            (*UART1_OverrunErrorHandler)();
-        }
-        
-        U1STATbits.RXFOIF = 0;
-    }
-    
-    if (U1STATbits.PERIF == 1)
-    {
-        uartError.status = uartError.status|(uint16_t)UART_ERROR_PARITY_MASK;
-        if(NULL != UART1_ParityErrorHandler)
-        {
-            (*UART1_ParityErrorHandler)();
-        }
-    }
-    
-    if (U1STATbits.FERIF == 1)
-    {
-        uartError.status = uartError.status|(uint16_t)UART_ERROR_FRAMING_MASK;
-        if(NULL != UART1_FramingErrorHandler)
-        {
-            (*UART1_FramingErrorHandler)();
-        }
-    }
-        
-    IFS2bits.U1EIF = 0;
-}
-
-/* ISR for UART Event Interrupt */
-void __attribute__ ( ( interrupt, no_auto_psv ) ) _U1EVTInterrupt(void)
-{
-    U1UIRbits.ABDIF = false;
-    IFS2bits.U1EVTIF = false;
-}
-
-int __attribute__((__section__(".libc.write"))) write(int handle, void *buffer, unsigned int len) {
-    unsigned int numBytesWritten = 0 ;
-    while(!UART1_IsTxDone())
-    {
-    }
-    while(numBytesWritten<len)
-    {
-        while(!UART1_IsTxReady())
-        {
-        }
-        UART1_Write(*((uint8_t *)buffer + numBytesWritten++));
-    }
-    return numBytesWritten;
 }
