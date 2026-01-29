@@ -1,3 +1,8 @@
+# dspic33a-curiosity-data-eeprom-emulation-demo v1.0.4
+### Release Highlights
+
+Patch release to fix deployment issue.
+
 # dspic33a-curiosity-data-eeprom-emulation-demo v1.0.3
 ### Release Highlights
 
